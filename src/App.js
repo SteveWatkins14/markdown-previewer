@@ -3,9 +3,12 @@ import Editor from './Editor';
 import Previewer from './Previewer';
 import defaultText from './default.js';
 
+// import markedjs
 let marked = require('marked');
 marked.setOptions({
+  // use github flavoured markdown
   gfm: true,
+  // interpret carriage returns as line breaks
   breaks: true
 });
 
@@ -13,16 +16,20 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state =  {
+      // on load display default text
       input: defaultText,
+      // convert default text into markdown
       markDown: {
         __html: marked(defaultText)
       }
     }
 
+    // bind this in functions
     this.updateMarkDown = this.updateMarkDown.bind(this);
     this.updateInput = this.updateInput.bind(this);
   }
 
+  // called when input is updated
   updateMarkDown() {
     this.setState({
       markDown: {
@@ -31,12 +38,14 @@ class App extends Component {
     });
   }
 
+  // called when text in editor is updated by user
   updateInput(event) {
     this.setState({
       input: event.target.value,
     });
   }
 
+  // on change of input field, call update markdown
   componentDidUpdate(prevProps, prevState) {
     if (prevState.input !== this.state.input) {
       this.updateMarkDown();
